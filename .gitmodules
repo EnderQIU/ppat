@@ -1,0 +1,3 @@
+[submodule "ppat/espeak/espeak.src"]
+	path = ppat/espeak/espeak.src
+	url = https://github.com/rhdunn/espeak.git

@@ -1,0 +1,10 @@
+ppat/espeak/espeak.install
+.DS_Store
+
+.idea/
+.vscode/
+
+venv/
+build/
+dist/
+ppat.egg-info/
