@@ -135,8 +135,8 @@ class EspeakProcess(object):
 
     def close(self):
         if DEBUG:
-            period = (datetime.now() - self._create_time).microseconds
-            print('Process of language "{}" has lived for {}μs and been called {} time(s)'
+            period = (datetime.now() - self._create_time).seconds
+            print('Process of language "{}" has lived for {} second(s) and been called {} time(s)'
                   .format(self.language, period, self._calls))
 
         self._child.close()

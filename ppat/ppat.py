@@ -10,7 +10,7 @@ from functools import total_ordering
 
 from prettytable import PrettyTable
 
-from pespeak import get_supported_languages, EspeakProcessManager
+from .pespeak import get_supported_languages, EspeakProcessManager
 
 try:
     import readline
@@ -26,6 +26,16 @@ espeak_engine = EspeakProcessManager()
 VERSION = 'v1.0'
 
 WELCOME = """!!!Welcome to PPAT transliterate engine!!!
+
+#    _____  _____     _______ 
+#   |  __ \|  __ \ /\|__   __|
+#   | |__) | |__) /  \  | |   
+#   |  ___/|  ___/ /\ \ | |   
+#   | |    | |  / ____ \| |   
+#   |_|    |_| /_/    \_\_|   
+#                             
+#                             
+
 Version {}
 Start loading rule files...
 """.format(VERSION)
@@ -63,7 +73,7 @@ def get_rule_file_path(language):
 
 
 def get_rule_script_import_path(language):
-    return 'rules.{}'.format(language.replace('-', '_'))
+    return '.rules.{}'.format(language.replace('-', '_'))
 
 
 def get_rule_script_file_path(language):
@@ -272,7 +282,8 @@ class Rule(object):
                             line_number, rule_file.name, current_section)
                     setattr(self, 'to_phonetics_' + k,
                             importlib.import_module(
-                                get_rule_script_import_path(self.language_code)).__getattribute__(v)
+                                get_rule_script_import_path(self.language_code),
+                                package='ppat').__getattribute__(v),
                             )
             elif current_section in self.match_sections:
                 k, v = self.split_kv(line)
@@ -305,12 +316,14 @@ class Rule(object):
                             line_number, rule_file.name, current_section)
                     setattr(self, 'post_process_' + k,
                             importlib.import_module(
-                                get_rule_script_import_path(self.language_code)).__getattribute__(v)
+                                get_rule_script_import_path(self.language_code),
+                                package='ppat').__getattribute__(v)
                             )
             else:
                 log('Invalid section "{}"'.format(line), line_number, rule_file.name)
         assert all(met_sections.values()), 'Missing necessary section(s).\n' + str(met_sections)
         assert self.max_match_length > 1
+        print('[OK] Rule file "{}".'.format(rule_file.name))
 
 
 class RulesManager(object):
@@ -537,9 +550,22 @@ class PPAT(object):
             x.add_row(row)
         print(x)
 
-
-if __name__ == '__main__':
+def main():
+    if sys.getdefaultencoding() != 'utf-8':
+        print('The system deault encoding is not UTF-8. Please set your shelli\'s encoding to UTF-8 for multi-language display.')
+        print("""In Linux:
+        \texport LANG=C.UTF-8
+        In Windows Powershell:
+        \tPlease Google "Windows Powershell utf8"
+        Exiting...
+        """
+        )
+        exit(0)
     verbose = True if 'verbose' in sys.argv[1:] else False
     ppat = PPAT()
     ppat.cli(verbose)
+
+
+if __name__ == '__main__':
+    main()
 
