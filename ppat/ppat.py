@@ -8,7 +8,14 @@ import re
 import sys
 from functools import total_ordering
 
+from prettytable import PrettyTable
+
 from pespeak import get_supported_languages, EspeakProcessManager
+
+try:
+    import readline
+except:
+    pass
 
 DEFAULT_ACTIVATED_LANGUAGES = ['en-us']
 
@@ -342,6 +349,9 @@ class RulesManager(object):
     def get_supported_languages(self):
         return self.rules.keys()
 
+    def get_supported_language_full_name(self, language_code):
+        return self.rules[language_code].language_full_name
+
     def get_supported_languages_and_full_names(self):
         return {k: self.rules[k].language_full_name for k in self.rules.keys()}
 
@@ -487,10 +497,14 @@ class PPAT(object):
         if command in ('help', 'h', ):
             print(HELP)
         elif command in ('lang', 'l', ):
+            x = PrettyTable()
+            x.field_names = ['Language Code', 'Language Full Name', 'Status']
             for language_code, language_full_name in self.rule_manager.get_supported_languages_and_full_names().items():
-                print('\t', language_code,
-                      '\t', language_full_name,
-                      '\t', 'ON' if language_code in self.activated_languages else 'OFF')
+                x.add_row([language_code,
+                           language_full_name,
+                           'ON' if language_code in self.activated_languages else 'OFF'
+                           ])
+            print(x)
         elif command.startswith('c') or command.startswith('config'):
             self.config(command)
         else:
@@ -515,11 +529,17 @@ class PPAT(object):
         if ' ' in word:
             print('Word cannot contain spaces.')
             return
+        x = PrettyTable()
+        x.field_names = ['Language', 'Phonetics(people)', 'Chinese(people)', 'Phonetics(places)', 'Chinese(places)']
         for language in self.activated_languages:
-            print(self.rule_manager.transliterate(word, language))
+            row = [self.rule_manager.get_supported_language_full_name(language)]+\
+                    list(self.rule_manager.transliterate(word, language))
+            x.add_row(row)
+        print(x)
 
 
 if __name__ == '__main__':
     verbose = True if 'verbose' in sys.argv[1:] else False
     ppat = PPAT()
     ppat.cli(verbose)
+
