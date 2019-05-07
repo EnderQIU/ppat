@@ -6,33 +6,41 @@ This project is aimed to translate the names automatedly but accurately.
 
 ## Getting Started From Scratch
 
-Clone this project with submodules by `git clone https://github.com/EnderQIU/ppat.git --recursive`.
-For running this project you **MUST** have `Python3.7(or 3.6)`, `gcc(or clang)` and `make` installed.
-Ubuntu 18.04, MacOS 10.13 are tested, and other platform could run after a little optimization.
-Before running you build the "espeak" submodule by executing `ppat/espeak/build.sh` and install python requirements
- described in `requirements.txt`.
+1. Clone project by `git clone https://github.com/EnderQIU/ppat.git` or `git clone git@github.com:EnderQIU/ppat.git`. If you want to clone espeak submodule at the same time, add `--recursive` option to the end.
+2. Simply run `python setup.py install` and follow the instructions in it.
+3. Command `ppat` is ready on your shell.
 
 ## Usage
 
-- From source code:
+- Most common usage:
 
 ```sh
-# With requirements already installed
-> cd ppat/
-> python ppat.py
+$ ppat
+!!!Welcome to PPAT transliterate engine!!!
+
+#    _____  _____     _______
+#   |  __ \|  __ \ /\|__   __|
+#   | |__) | |__) /  \  | |
+#   |  ___/|  ___/ /\ \ | |
+#   | |    | |  / ____ \| |
+#   |_|    |_| /_/    \_\_|
+#
+#
+
+Version v1.0
+Start loading rule files...
+
+[OK] Rule file "/home/*************/rules/en-us.rule".
+
+All rule files are loaded!
+Input names of people or places after the prompt.
+Type ":help" for more instructions.
 ```
 
-- From `setup.py`:
-
-```
-> python setup.py install
-> ppat
-```
-
-- From `pip`:
+- Enable verbose mode to debug your rule files:
 
 ```sh
-> pip install ppat
+$ ppat verbose
 ```
 
 ## Write Transliteration Rules

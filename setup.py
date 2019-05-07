@@ -13,7 +13,7 @@ class BuildEspeakInstallCommand(install):
     """
     def run(self):
         subprocess.check_call(BUILD_SCRIPT)
-        super().run()
+        install.do_egg_install(self)
 
 
 install_requires = []
