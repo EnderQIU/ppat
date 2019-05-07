@@ -2,6 +2,7 @@
 Espeak's Python Binding
 """
 import os
+import platform
 import subprocess
 from datetime import datetime
 from functools import total_ordering
@@ -25,7 +26,23 @@ __SUPPORTED_LANGUAGES__ = {}
 MAX_CHILDREN_NUMBER = 12
 
 # Languages that usually be used, will not be closed by EspeakProcessManager if the number of process reaches its limit
-ALWAYS_ONLINE_LANGUAGES = ['en-us', 'fr-fr', 'de', ]
+ALWAYS_ONLINE_LANGUAGES = ['en-us']
+
+
+def subprocess_run_by_python_version(command):
+    """
+    Do subprocess.run() properly in python3.6 and 3.7.
+    See https://stackoverflow.com/questions/53209127/subprocess-unexpected-keyword-argument-capture-output
+    """
+    python_version = platform.python_version()
+    if python_version.startswith('3.6'):
+        from subprocess import PIPE
+        return subprocess.run(command.split(' ')+['>>', '/dev/null'], stdout=PIPE, stderr=PIPE).stdout.decode('utf8')
+    elif python_version.startswith('3.7'):
+        return subprocess.run(command, shell=True, capture_output=True).stdout.decode('utf8')
+    else:
+        print('Invalid python version {}. You MUST have python3.6 or python3.7 installed.')
+        exit(0)
 
 
 def get_supported_languages():
@@ -35,7 +52,7 @@ def get_supported_languages():
     """
     if __SUPPORTED_LANGUAGES__:
         return __SUPPORTED_LANGUAGES__
-    lang_table = subprocess.run(ESPEAK_VOICES_COMMAND, shell=True, capture_output=True).stdout.decode('utf8')
+    lang_table = subprocess_run_by_python_version(ESPEAK_VOICES_COMMAND)
     if not lang_table:
         raise FileNotFoundError('"espeak" has not been installed in your OS.')
     lines = lang_table.split('\n')
@@ -58,7 +75,7 @@ def print_supported_languages():
 
 
 def get_espeak_version():
-    return subprocess.run(ESPEAK_VERSION_COMMAND, shell=True, capture_output=True).stdout.decode('utf8')
+    return subprocess_run_by_python_version(ESPEAK_VERSION_COMMAND)
 
 
 def _spawn_espeak(language):

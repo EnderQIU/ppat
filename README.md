@@ -6,8 +6,11 @@ This project is aimed to translate the names automatedly but accurately.
 
 ## Getting Started From Scratch
 
-For running this project you need `Python3`, `gcc(clang)` and `make` installed.
-And get the "espeak" submodules by executing `ppat/espeak/build.sh`.
+Clone this project with submodules by `git clone https://github.com/EnderQIU/ppat.git --recursive`.
+For running this project you **MUST** have `Python3.7(or 3.6)`, `gcc(or clang)` and `make` installed.
+Ubuntu 18.04, MacOS 10.13 are tested, and other platform could run after a little optimization.
+Before running you build the "espeak" submodule by executing `ppat/espeak/build.sh` and install python requirements
+ described in `requirements.txt`.
 
 ## Usage
 

@@ -8,7 +8,7 @@ import re
 import sys
 from functools import total_ordering
 
-from .pespeak import get_supported_languages, EspeakProcessManager
+from pespeak import get_supported_languages, EspeakProcessManager
 
 DEFAULT_ACTIVATED_LANGUAGES = ['en-us']
 
@@ -35,14 +35,17 @@ CONFIG = """
 """
 
 HELP = """
-Type a word to transliterate it. The default source language is en-us\tEnglish_(America).
+Type a word without spaces to transliterate.
 
 :c\t:config                Get all available configurations.
 :c\t:config <key> <value>  Set a configuration.
 :l\t:lang                  Get all available languages.
 :q\t:quit                  Quit PPAT.
 :h\t:help                  Print this message.
-"""
+
+The default source languages are set to:
+{}
+""".format('\n'.join(i for i in DEFAULT_ACTIVATED_LANGUAGES))
 
 BYE = """Bye.
 """
@@ -420,7 +423,7 @@ class RulesManager(object):
                     start += len(match)
                     # the consonant is the last phonetic of the word, no need to check vowels
                     if start == len(phonetics):
-                        hans += self._find_han_by_coords(coord_c, coord_v)
+                        hans += self._find_han_by_coords(coord_c, 1)
                         break
                     coord_v, match = self._longest_prefix_match('vowels', phonetics, start)
                     if match:
