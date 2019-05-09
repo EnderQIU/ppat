@@ -31,17 +31,17 @@ ALWAYS_ONLINE_LANGUAGES = ['en-us']
 
 def subprocess_run_by_python_version(command):
     """
-    Do subprocess.run() properly in python3.6 and 3.7.
+    Do subprocess.run() properly in python3.5(6) and 3.7.
     See https://stackoverflow.com/questions/53209127/subprocess-unexpected-keyword-argument-capture-output
     """
     python_version = platform.python_version()
-    if python_version.startswith('3.6'):
+    if python_version.startswith('3.5') or python_version.startswith('3.6'):
         from subprocess import PIPE
         return subprocess.run(command.split(' ')+['>>', '/dev/null'], stdout=PIPE, stderr=PIPE).stdout.decode('utf8')
     elif python_version.startswith('3.7'):
         return subprocess.run(command, shell=True, capture_output=True).stdout.decode('utf8')
     else:
-        print('Invalid python version {}. You MUST have python3.6 or python3.7 installed.')
+        print('Invalid python version {}. You MUST have python3.5, 3.6 or 3.7 installed.')
         exit(0)
 
 

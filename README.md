@@ -6,6 +6,8 @@ This project is aimed to translate the names automatedly but accurately.
 
 ## Getting Started From Scratch
 
+**Notice:** Your Python version should either be 3.5, 3.6 or 3.7. And if your platform is Windows, you should build or download espeak binary executable manually and put the `espeak.exe` in `ppat/espeak/espeak.install/bin/` folder. Following instructions are for Debian family distributions (with APT).
+
 1. Clone project by `git clone https://github.com/EnderQIU/ppat.git` or `git clone git@github.com:EnderQIU/ppat.git`. If you want to clone espeak submodule at the same time, add `--recursive` option to the end.
 2. Simply run `python setup.py install` and follow the instructions in it.
 3. Command `ppat` is ready on your shell.

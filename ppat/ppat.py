@@ -219,7 +219,8 @@ class Rule(object):
 
     @staticmethod
     def parse_k_in_transliteration_section(k):
-        assert isinstance(k, str) and ',' in k
+        assert isinstance(k, str) and ',' in k, \
+            'Key "{}" in transliteration section should in "coord_c, coord_v" format. Check your rule file.'.format(k)
 
         items = k.split(',')
         assert len(items) == 2
