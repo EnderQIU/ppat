@@ -501,7 +501,7 @@ class PPAT(object):
             if len(items) < 3:
                 print('Please specify one language at least. See all available languages by typing ":lang".')
             else:
-                if any([i in self.rule_manager.get_supported_languages() for i in items[2:]]):
+                if any([i not in self.rule_manager.get_supported_languages() for i in items[2:]]):
                     print('Invalid language code. See all available languages by typing ":lang".')
                     return
                 self.activated_languages = items[2:]
