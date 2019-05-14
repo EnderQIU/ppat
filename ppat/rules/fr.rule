@@ -1,12 +1,11 @@
 .meta
 
-language_name = French
+language_full_name = French
 
 .to_phonetics
 
-
-out = in
-
+people = lowercase
+places = lowercase
 
 .phonetics
 
@@ -671,9 +670,6 @@ ière|ieres        = 25
 24 ,24  = 克苏万
 24 ,25  = 克西
 
-.post people
-
-out = in
 
 //
 .consonants places
@@ -1268,6 +1264,8 @@ oin|oim     = 25
 23 ,18  = 永
 23 ,19  = 尤
 
+.post_process
 
-.post places
-out = in
+people = copy
+places = copy
+
